@@ -1,0 +1,18 @@
+2 - Para que serve o mutex usado no ficheiro ttt_lib.c?
+	Para quando um jogador esta a alterar o tabuleiro o outro nao poder aceder, nem mesmo apenas para leitura
+
+4 - a) Onde estão as rotinas de conversão de tipos de dados?
+	ficheiro xdr	
+    b) Onde é chamada a função clnt_call()?
+	currentboard_1 	( line 18 ttt_clnt.c )
+	play_1		( line 33 ttt_clnt.c )
+	checkwinner_1	( line 48 ttt_clnt.c )
+
+    c) Que ficheiros pertencem ao cliente, ao servidor, e a ambos? (consulte também a Makefile)
+	Cliente	= ttt_client.c , ttt_clnt.c 
+	Server	= ttt_server.c , ttt_svc.c , ttt_lib.c , ttt_lib.h
+	Ambos	= ttt_xdr.c , ttt.x 
+    d) Que ficheiros estão incompletos e devem ser alterados pelo programador?
+	Gerados pelo -Sc e -Ss
+    e) Qual o protocolo que o cliente e servidor usam para comunicar?
+	udp
