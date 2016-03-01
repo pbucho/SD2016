@@ -5,7 +5,6 @@
  */
 
 #include <stdio.h>
-#include "ttt_lib.h"
 #include "ttt.h"
 
 
@@ -17,7 +16,9 @@ ttt_1(char *host)
 	char *currentboard_1_arg;
 	int  *result_2;
 	play_args  play_1_arg;
+	char* undoplay_1_arg;
 	int  *result_3;
+	void *result_4;
 	char *checkwinner_1_arg;
 
 #ifndef	DEBUG
@@ -27,25 +28,6 @@ ttt_1(char *host)
 		exit (1);
 	}
 #endif	/* DEBUG */
-
-	/*
-	result_1 = currentboard_1((void*)&currentboard_1_arg, clnt);
-	if (result_1 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	*/
-	/*
-	result_2 = play_1(&play_1_arg, clnt);
-	if (result_2 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	*/
-	/*
-	result_3 = checkwinner_1((void*)&checkwinner_1_arg, clnt);
-	if (result_3 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	*/
 
 	int player = 0;                              /* Player number - 0 or 1               */
 	int go = 0;                                  /* Square selection number for turn     */
@@ -80,11 +62,23 @@ ttt_1(char *host)
 			 "where you want to place your %c (or 0 to refresh the board): ", player,(player==1)?'X':'O');
 			scanf(" %d", &go);
 
+			printf("numero: %d\n",go );
 			if (go == 0){
 				play_res = 0;
 				continue;
 			}
-
+			if (go == 10){
+				/************************************/
+				/************************************/
+				//undo request
+        result_4 = undoplay_1((void*)&undoplay_1_arg, clnt);
+        if (result_4 == (void *) NULL) {
+          clnt_perror (clnt, "call failed");
+        }
+				/************************************/
+				/************************************/
+				continue;
+			}
 					row = --go/3;                                 /* Get row index of square      */
 					column = go%3;                                /* Get column index of square   */
 

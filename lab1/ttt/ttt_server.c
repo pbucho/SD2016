@@ -5,34 +5,51 @@
  */
 
 #include "ttt.h"
-#include "ttt_lib.h"
 
 char **
 currentboard_1_svc(void *argp, struct svc_req *rqstp)
 {
-    static char *result = NULL;
-    result = malloc(MAX_BUFFER_LEN);
-    currentBoard(result);
+	static char * result;
 
-    return &result;
+	/*
+	 * insert server code here
+	 */
+
+	return &result;
 }
 
 int *
 play_1_svc(play_args *argp, struct svc_req *rqstp)
 {
-  static int  result;
+	static int  result;
 
-  result = play(argp->row, argp->column, argp->player);
-  
-  return &result;
+	/*
+	 * insert server code here
+	 */
+
+	return &result;
 }
 
 int *
 checkwinner_1_svc(void *argp, struct svc_req *rqstp)
 {
-  static int  result;
+	static int  result;
 
-  result = checkWinner();
+	/*
+	 * insert server code here
+	 */
 
-  return &result;
+	return &result;
+}
+
+void *
+undoplay_1_svc(void *argp, struct svc_req *rqstp)
+{
+	static char * result;
+
+	/*
+	 * insert server code here
+	 */
+
+	return (void *) &result;
 }

@@ -103,7 +103,7 @@ int checkWinner() {
     {
         result = 2; /* A draw! */
     }
-    
+
     pthread_mutex_unlock (&mutex);
-    return result; 
+    return result;
 }
