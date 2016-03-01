@@ -5,17 +5,40 @@
  */
 
 #include "ttt.h"
+#include <stdio.h>
+#include <pthread.h>
+
+
+#define MAX_BUFFER_LEN 100
+
+/* The board */
+static char board[3][3] = {
+    {'1','2','3'},  /* Initial values are reference numbers */
+    {'4','5','6'},  /* used to select a vacant square for   */
+    {'7','8','9'}   /* a turn.                              */
+};
+/* Next player allowed to play */
+static int nextPlayer = 0;
+/* Number of plays so far */
+static int numPlays = 0;
+/* Mutex */
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+int jogadas[9];
 
 char **
 currentboard_1_svc(void *argp, struct svc_req *rqstp)
 {
-	static char * result;
+	static char *buffer;
 
-	/*
-	 * insert server code here
-	 */
+  pthread_mutex_lock(&mutex);
+  /* Display the board in the provided buffer*/
+  snprintf(buffer, MAX_BUFFER_LEN, "\n\n %c | %c | %c\n---+---+---\n %c | %c | %c\n---+---+---\n %c | %c | %c\n ",
+      board[0][0], board[0][1], board[0][2],
+      board[1][0], board[1][1], board[1][2],
+      board[2][0], board[2][1], board[2][2]);
+  pthread_mutex_unlock(&mutex);
 
-	return &result;
+  return &buffer;
 }
 
 int *
@@ -23,9 +46,42 @@ play_1_svc(play_args *argp, struct svc_req *rqstp)
 {
 	static int  result;
 
-	/*
-	 * insert server code here
-	 */
+  int row    = argp->row;
+  int column = argp->column;
+  int player = argp->player;
+
+  if (!(row >=0 && row <3 && column >= 0 && column < 3)) {
+      /* outside board */
+      result = 1;
+      return &result;
+  }
+  pthread_mutex_lock(&mutex);
+  if (board[row][column] > '9') {
+      /* invalid square */
+      pthread_mutex_unlock(&mutex);
+      result = 2;
+      return &result;
+  }
+  if (player != nextPlayer)  {
+      /* not players turn */
+      pthread_mutex_unlock(&mutex);
+      result = 3;
+      return &result;
+
+  }
+  if (numPlays == 9) {
+      /* no more plays left */
+      pthread_mutex_unlock(&mutex);
+      result = 4;
+      return &result;
+  }
+
+  board[row][column] = (player == 1) ? 'X' : 'O';  /* Insert player symbol   */
+  jogadas[numPlays] = row*3+column+1;
+  nextPlayer = (nextPlayer + 1) % 2;
+  numPlays ++;
+  pthread_mutex_unlock(&mutex);
+  return 0;
 
 	return &result;
 }
