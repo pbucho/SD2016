@@ -31,25 +31,55 @@ play_1_svc(play_args *argp, struct svc_req *rqstp)
 }
 
 int *
-checkwinner_1_svc(void *argp, struct svc_req *rqstp)
-{
-	static int  result;
+checkwinner_1_svc(void *argp, struct svc_req *rqstp){
+  static int result = -1;
+  int line;
 
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
+  if((board[0][0] == board[1][1] && board[0][0] == board[2][2]) ||
+     (board[0][2] == board[1][1] && board[0][2] == board[2][0])){
+    if (board[1][1]=='X')
+      result = 1;
+    else
+      result = 0;
+  }else{
+    /* Check rows and columns for a winning line */
+    for(line = 0; line <= 2; line ++){
+      if((board[line][0] == board[line][1] && board[line][0] == board[line][2])){         
+        if (board[line][0]=='X'){
+           result = 1;
+         }else{
+           result = 0;
+         }
+	break;
+      }
+      if ((board[0][line] == board[1][line] && board[0][line] == board[2][line])){
+        if (board[0][line]=='X')
+           result = 1;
+        else
+           result = 0;
+        break;
+      }
+    }
+  }
+  
+  if(result == -1 && numPlays == 9){
+    result = 2;
+  }
+  return &result;
 }
 
 void *
 undoplay_1_svc(void *argp, struct svc_req *rqstp)
 {
-	static char * result;
+  static char * result;
+  // global int jogadas;
+  if(numPlays == 0) return (void *) &result;
+  int jogada = jogadas[--numPlays];
 
-	/*
-	 * insert server code here
-	 */
+  int row = -- jogada / 3;
+  int column = jogada % 3;
 
-	return (void *) &result;
+  board[row][column] = jogada + 1;
+  
+  return (void *) &result;
 }
