@@ -28,17 +28,20 @@ int jogadas[9];
 char **
 currentboard_1_svc(void *argp, struct svc_req *rqstp)
 {
-	static char *buffer;
+  static char *result;//  static char buffer[MAX_BUFFER_LEN];
 
+  char buffer[MAX_BUFFER_LEN];
   pthread_mutex_lock(&mutex);
   /* Display the board in the provided buffer*/
-  snprintf(buffer, MAX_BUFFER_LEN, "\n\n %c | %c | %c\n---+---+---\n %c | %c | %c\n---+---+---\n %c | %c | %c\n ",
+  snprintf(buffer, MAX_BUFFER_LEN, "\n\n %c | %c | %c\n---+---+---\n %c | %c | %c\n---+---+---\n %c | %c | %c\n",
       board[0][0], board[0][1], board[0][2],
       board[1][0], board[1][1], board[1][2],
       board[2][0], board[2][1], board[2][2]);
   pthread_mutex_unlock(&mutex);
 
-  return &buffer;
+  result = (char *) buffer;
+  printf("TABULEIRO\n%s\n", buffer);
+  return &result;
 }
 
 int *
@@ -100,7 +103,7 @@ checkwinner_1_svc(void *argp, struct svc_req *rqstp){
   }else{
     /* Check rows and columns for a winning line */
     for(line = 0; line <= 2; line ++){
-      if((board[line][0] == board[line][1] && board[line][0] == board[line][2])){         
+      if((board[line][0] == board[line][1] && board[line][0] == board[line][2])){
         if (board[line][0]=='X'){
            result = 1;
          }else{
@@ -117,7 +120,7 @@ checkwinner_1_svc(void *argp, struct svc_req *rqstp){
       }
     }
   }
-  
+
   if(result == -1 && numPlays == 9){
     result = 2;
   }
@@ -134,8 +137,9 @@ undoplay_1_svc(void *argp, struct svc_req *rqstp)
 
   int row = -- jogada / 3;
   int column = jogada % 3;
-
+  pthread_mutex_lock(&mutex);
   board[row][column] = jogada + 1;
-  
+  pthread_mutex_unlock(&mutex);
+
   return (void *) &result;
 }
