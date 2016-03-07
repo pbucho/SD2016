@@ -5,14 +5,15 @@ import java.util.Scanner;
 import java.rmi.*;
 
 public class Game {
-	TTT ttt;
+	TTTService ttt;
 	Scanner keyboardSc;
 	int winner = 0;
 	int player = 1;
 
 	public Game() throws RemoteException, Exception{
     	keyboardSc = new Scanner(System.in);
-		ttt = (TTT) Naming.lookup("_game");
+    	ttt = null;
+		ttt = (TTTService) Naming.lookup("//localhost:58866/_game");
 		System.out.println("Found server");
 	}
 		
