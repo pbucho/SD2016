@@ -1,9 +1,14 @@
 package ttt;
 
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import TTTService;
+//import TTTService;
 
 public class TTT extends UnicastRemoteObject implements TTTService {
+  /**
+	 * 
+	 */
+  private static final long serialVersionUID = 1L;
   char board[][] = {
     {'1','2','3'},          /* Initial values are reference numbers */
     {'4','5','6'},          /* used to select a vacant square for   */
@@ -15,9 +20,9 @@ public class TTT extends UnicastRemoteObject implements TTTService {
   /**
    * @throws Remote Exception
 '  */
-  public TTT () throws RemoteException {}
+  public TTT () throws RemoteException  {}
 
-  public String currentBoard() {
+  public String currentBoard() throws RemoteException {
       String s = "\n\n " + 
             board[0][0]+" | " +
             board[0][1]+" | " +
@@ -31,9 +36,9 @@ public class TTT extends UnicastRemoteObject implements TTTService {
             board[2][1]+" | " +
             board[2][2] + " \n";
       return s;
-    }
+  }
 
-    public boolean play(int row, int column, int player) {
+  public boolean play(int row, int column, int player) throws RemoteException {
     if (!(row >=0 && row <3 && column >= 0 && column < 3))
       return false;
     if (board[row][column] > '9')
@@ -50,7 +55,7 @@ public class TTT extends UnicastRemoteObject implements TTTService {
     return true;  
     }
 
-    public int checkWinner() {
+    public int checkWinner() throws RemoteException {
         int i;
         /* Check for a winning line - diagonals first */     
         if((board[0][0] == board[1][1] && board[0][0] == board[2][2]) ||

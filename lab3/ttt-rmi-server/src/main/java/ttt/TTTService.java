@@ -18,7 +18,7 @@ interface TTTService extends Remote {
    * @param int column number
    * @param player number
    */
-  public boolean play(int, int, int) throws RemoteException;
+  public boolean play(int row, int column, int number) throws RemoteException;
 
   /**
    * @throws RemoteException
