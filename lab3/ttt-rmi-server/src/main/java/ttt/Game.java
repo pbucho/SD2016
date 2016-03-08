@@ -21,7 +21,8 @@ public class Game {
 							+ "where you want to place your %c (or 0 to refresh the board): \n",
 							player, (player == 1) ? 'X' : 'O');
 			play = keyboardSc.nextInt();
-		} while (play > 9 || play < 0);
+		} while (play > 10 || play < 0);
+		System.out.println("play: " + play);
 		return play;
 	}
 

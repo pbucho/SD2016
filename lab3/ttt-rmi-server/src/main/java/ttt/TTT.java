@@ -9,6 +9,9 @@ public class TTT extends UnicastRemoteObject implements TTTService {
 	 * 
 	 */
   private static final long serialVersionUID = 1L;
+  private int nome[] = new int[2]; 
+  
+  
   char board[][] = {
     {'1','2','3'},          /* Initial values are reference numbers */
     {'4','5','6'},          /* used to select a vacant square for   */
@@ -50,6 +53,9 @@ public class TTT extends UnicastRemoteObject implements TTTService {
       return false;
 
     board[row][column] = (player == 1) ? 'X' : 'O';        /* Insert player symbol   */
+    
+    nome[player] = row*3 + column + 1;
+    
     nextPlayer = (nextPlayer + 1) % 2;
     numPlays ++;
     return true;  
@@ -87,5 +93,10 @@ public class TTT extends UnicastRemoteObject implements TTTService {
           else
             return -1; /* Game is not over yet */
   }
+
+	@Override
+	public int lastPlay() throws RemoteException {
+		return nome[nextPlayer];
+	}
 
 }

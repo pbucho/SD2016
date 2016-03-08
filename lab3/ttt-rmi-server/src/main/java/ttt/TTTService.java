@@ -25,5 +25,11 @@ interface TTTService extends Remote {
    * @return int player number that wins or -1 when does not exist a winner
    */
   public int checkWinner() throws RemoteException;
+
+  /**
+   * @throws RemoteException
+   * @return int position where lastPlayer played
+   */
+  public int lastPlay() throws RemoteException;
   
 }
