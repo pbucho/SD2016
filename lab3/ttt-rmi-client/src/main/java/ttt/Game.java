@@ -30,9 +30,21 @@ public class Game {
 	 * @throws NotBoundException
 	 */
 	public Game() throws RemoteException, MalformedURLException, NotBoundException {
+		this("localhost",58866);
+	}
+
+	/**
+	 * 
+	 * @param host
+	 * @param port
+	 * @throws RemoteException
+	 * @throws MalformedURLException
+	 * @throws NotBoundException
+	 */
+	public Game(String host, int port) throws RemoteException, MalformedURLException, NotBoundException {
     	keyboardSc = new Scanner(System.in);
     	ttt = null;
-		ttt = (TTTService) Naming.lookup("//localhost:58866/_game");
+		ttt = (TTTService) Naming.lookup("//" + host + ":" + port + "/_game");
 		System.out.println("Found server");
 	}
 	
@@ -68,8 +80,8 @@ public class Game {
 				if (play != 0) {
 					if (play == 10)
 					{
-						if (ttt.lastPlay() == 0) System.out.println(ANSI_RED + "This player has not played yet!" + ANSI_RESET);
-						else System.out.println("Last play of " + player +" was: " + ttt.lastPlay());
+						if (ttt.minhaUltima() == 0) System.out.println(ANSI_RED + "This player has not played yet!" + ANSI_RESET);
+						else System.out.println("Last play of " + player +" was: " + ttt.minhaUltima());
 						playAccepted = false;
 					}else{
 						playAccepted = ttt.play( --play / 3, play % 3, player);

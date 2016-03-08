@@ -1,0 +1,8 @@
+Enquanto que no RPC é necessário gerar código que converta os dados para um formato de rede reconhecido, no caso do RMI, uma vez que os objetos herdam de UnicastRemoteObject e este implementa a interface UnicastRemoteObject, todos os objetos sao serializados automaticamente pelo java, e os bytes sao enviados pela rede.
+
+
+ii.
+Servidor: Manager (do servidor)  e TTT
+Cliente: Manager (do cliente) e Game
+Ambos: TTTService
+

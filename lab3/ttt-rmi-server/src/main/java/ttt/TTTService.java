@@ -30,6 +30,6 @@ interface TTTService extends Remote {
    * @throws RemoteException
    * @return int position where lastPlayer played
    */
-  public int lastPlay() throws RemoteException;
+  public int minhaUltima() throws RemoteException;
   
 }

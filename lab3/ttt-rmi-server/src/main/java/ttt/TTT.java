@@ -95,7 +95,7 @@ public class TTT extends UnicastRemoteObject implements TTTService {
   }
 
 	@Override
-	public int lastPlay() throws RemoteException {
+	public int minhaUltima() throws RemoteException {
 		return nome[nextPlayer];
 	}
 
