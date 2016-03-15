@@ -7,6 +7,7 @@ import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 import pt.ulisboa.tecnico.sdis.ws.uddi.UDDINaming;
 
 import ttt.*; // classes generated from WSDL
+import java.util.ArrayList;
 
 public class Game {
 
@@ -69,20 +70,29 @@ public class Game {
 							+ "where you want to place your %c (or 0 to refresh the board): %n",
 					player, (player == 1) ? 'X' : 'O');
 			play = keyboardSc.nextInt();
-		} while (play > 9 || play < 0);
+		} while (play > 10 || play < 0);
 		return play;
 	}
 
 	public void playGame() {
 		int play;
 		boolean playAccepted;
-
+		List<Integer> posicoesLivres = new ArrayList<Integer>();
 		do {
 			player = ++player % 2;
 			do {
 				System.out.println(ttt.currentBoard());
 				play = readPlay();
-				if (play != 0) {
+				if (play == 10) {
+				 	 posicoesLivres = ttt.posicoesLivres();
+					 System.out.printf(
+					 				"\nThe Following positions are Avaiable:\n\t| ");
+
+					 for (Integer c : posicoesLivres){
+						 System.out.printf(c + " | ");
+					 }
+					 playAccepted = false;
+			  } else if (play != 0) {
 					playAccepted = ttt.play(--play / 3, play % 3, player);
 					if (!playAccepted)
 						System.out.println("Invalid play! Try again.");

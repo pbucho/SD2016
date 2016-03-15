@@ -1,6 +1,8 @@
 package ttt;
 
 import javax.jws.WebService;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService(endpointInterface = "ttt.TTT")
 public class TTTImpl implements TTT {
@@ -71,6 +73,19 @@ public class TTTImpl implements TTT {
 			return 2; /* A draw! */
 		else
 			return -1; /* Game is not over yet */
+	}
+
+	public List<Integer> posicoesLivres(){
+		List<Integer> posicoes = new ArrayList<Integer>();
+		int l = 0;
+		int c = 0;
+		for(l = 0; l < 3; l++)
+			for(c=0;c<3;c++){
+				char pos = board[l][c];
+				if( pos != 'X' && pos != 'O' )
+				posicoes.add(l*3+c+1);
+			}
+		return posicoes;
 	}
 
 }

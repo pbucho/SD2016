@@ -1,6 +1,8 @@
 package ttt;
 
 import javax.jws.WebService;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService
 public interface TTT {
@@ -9,4 +11,7 @@ public interface TTT {
 	boolean play(int row, int column, int player);
 
 	int checkWinner();
+
+	List<Integer> posicoesLivres();
+
 }
